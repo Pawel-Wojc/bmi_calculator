@@ -29,7 +29,6 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     if (value == null || value.isEmpty) {
       return '';
     }
-
     if (!widget.emailRegex.hasMatch(value)) {
       return '';
     }

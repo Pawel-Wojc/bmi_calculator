@@ -1,6 +1,7 @@
 import 'package:bmi_app/bmi_results.dart';
 import 'package:bmi_app/custom_alert_dialog.dart';
 import 'package:bmi_app/custom_text_form_field.dart';
+import 'package:bmi_app/unit_toogle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,8 +20,9 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
-  final String _heightUnit = 'meters';
-  final String _weightUnit = 'kilograms';
+  bool _isMetric = true;
+  String _heightUnit = 'meters';
+  String _weightUnit = 'kilograms';
   String? emailAddress;
   final _formKey = GlobalKey<FormState>();
 
@@ -53,6 +55,7 @@ class _CalculatorState extends State<Calculator> {
   Map<String, String> calculateBmi() {
     double? weight;
     double? height;
+
     String weightValue = _weightController.text.replaceAll(",", ".");
     String heightValue = _heightController.text.replaceAll(",", ".");
 
@@ -65,6 +68,11 @@ class _CalculatorState extends State<Calculator> {
         'category': 'Unknown',
       };
     }
+    if (!_isMetric) {
+      weight = weight * 0.453592;
+      height = height * 0.0254;
+    }
+
     double bmi = (weight / (height * height));
     return <String, String>{
       'bmi': bmi.toStringAsFixed(2),
@@ -82,6 +90,9 @@ class _CalculatorState extends State<Calculator> {
       parsedValue = double.parse(value);
     } catch (e) {
       return '';
+    }
+    if (!_isMetric) {
+      parsedValue = parsedValue * 0.453592;
     }
     if (parsedValue > 200 || parsedValue < 1) {
       return '';
@@ -101,10 +112,28 @@ class _CalculatorState extends State<Calculator> {
     } catch (e) {
       return '';
     }
+    if (!_isMetric) {
+      parsedValue = parsedValue * 0.0254;
+    }
     if (parsedValue > 2.5 || parsedValue < 0.5) {
       return '';
     }
     return null;
+  }
+
+  void onToggle(bool isMetric) {
+    setState(() {
+      emailAddress = null;
+      if (isMetric) {
+        _isMetric = true;
+        _heightUnit = 'meters';
+        _weightUnit = 'kilograms';
+      } else {
+        _isMetric = false;
+        _heightUnit = 'inches';
+        _weightUnit = 'pounds';
+      }
+    });
   }
 
   @override
@@ -124,6 +153,7 @@ class _CalculatorState extends State<Calculator> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  UnitToggle(onToggle: onToggle),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -150,7 +180,7 @@ class _CalculatorState extends State<Calculator> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              "(meters)",
+                              "($_heightUnit)",
                               style: GoogleFonts.poppins(
                                   fontSize: 12, fontWeight: FontWeight.w400),
                             ),
@@ -185,7 +215,7 @@ class _CalculatorState extends State<Calculator> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              "(kilograms)",
+                              "($_weightUnit)",
                               style: GoogleFonts.poppins(
                                   fontSize: 12, fontWeight: FontWeight.w400),
                             ),

@@ -17,7 +17,7 @@ class CalculatorScreen extends StatelessWidget {
             style:
                 GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 0),
           const Calculator(),
         ],
       ),

@@ -11,7 +11,6 @@ class CalculateButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        _formKey.currentState!.validate();
         if (_formKey.currentState!.validate()) {
           showCustomDialog(context);
         }
