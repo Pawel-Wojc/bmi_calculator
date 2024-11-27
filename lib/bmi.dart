@@ -6,10 +6,9 @@ class Bmi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
-          backgroundColor: const Color(0xFFF2F2F2),
-          body: Container(child: CalculatorScreen())),
+          backgroundColor: Color(0xFFF2F2F2), body: CalculatorScreen()),
     );
   }
 }

@@ -19,8 +19,80 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
+  final String _heightUnit = 'meters';
+  final String _weightUnit = 'kilograms';
   String? emailAddress;
   final _formKey = GlobalKey<FormState>();
+
+  void setEmail(String email) {
+    setState(() {
+      emailAddress = email;
+    });
+  }
+
+  void showCustomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+            calculateBmi: calculateBmi()['category'], setEmail: setEmail);
+      },
+    );
+  }
+
+  String getBmiCategory(double bmiValue) {
+    for (var bmiRange in bmiRanges.entries) {
+      if (bmiValue >= bmiRange.value[0] && bmiValue <= bmiRange.value[1]) {
+        return bmiRange.key;
+      }
+    }
+    return 'Unknown';
+  }
+
+  Map<String, String> calculateBmi() {
+    double weight = double.parse(_weightController.text);
+    double height = double.parse(_heightController.text);
+    double bmi = (weight / (height * height));
+    return <String, String>{
+      'bmi': bmi.toStringAsFixed(2),
+      'category': getBmiCategory(bmi),
+    };
+  }
+
+  String? validateWeight(String? value) {
+    if (value == null || value.isEmpty) {
+      return '';
+    }
+    value = value.replaceAll(',', '.');
+    double? parsedValue;
+    try {
+      parsedValue = double.parse(value);
+    } catch (e) {
+      return '';
+    }
+    if (parsedValue > 200 || parsedValue < 1) {
+      return '';
+    }
+    //print(parsedValue);
+    return null;
+  }
+
+  String? validateHeight(String? value) {
+    if (value == null || value.isEmpty) {
+      return '';
+    }
+    value = value.replaceAll(',', '.');
+    double? parsedValue;
+    try {
+      parsedValue = double.parse(value);
+    } catch (e) {
+      return '';
+    }
+    if (parsedValue > 2.5 || parsedValue < 0.5) {
+      return '';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +110,6 @@ class _CalculatorState extends State<Calculator> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -59,7 +130,7 @@ class _CalculatorState extends State<Calculator> {
                               height: 32,
                               child: CustomTextFormField(
                                   controller: _heightController,
-                                  label: "(meters)",
+                                  label: "($_heightUnit)",
                                   validate: validateHeight,
                                   maxCharacters: 4)),
                           const SizedBox(height: 4),
@@ -94,7 +165,7 @@ class _CalculatorState extends State<Calculator> {
                               height: 32,
                               child: CustomTextFormField(
                                   controller: _weightController,
-                                  label: "(kilograms)",
+                                  label: "($_weightUnit)",
                                   validate: validateWeight,
                                   maxCharacters: 6)),
                           const SizedBox(height: 4),
@@ -115,6 +186,7 @@ class _CalculatorState extends State<Calculator> {
             ),
           ),
           // CalculateButton(_formKey)
+          const SizedBox(height: 20),
           CalculateButton(_formKey, showCustomDialog: showCustomDialog),
           if (emailAddress != null)
             BmiResults(
@@ -124,74 +196,5 @@ class _CalculatorState extends State<Calculator> {
         ],
       ),
     );
-  }
-
-  String? validateWeight(String? value) {
-    if (value == null || value.isEmpty) {
-      return '';
-    }
-    value = value.replaceAll(',', '.');
-    double? parsedValue;
-    try {
-      parsedValue = double.parse(value);
-    } catch (e) {
-      return '';
-    }
-    if (parsedValue > 200) {
-      return '';
-    }
-    //print(parsedValue);
-    return null;
-  }
-
-  String? validateHeight(String? value) {
-    if (value == null || value.isEmpty) {
-      return '';
-    }
-    value = value.replaceAll(',', '.');
-    double? parsedValue;
-    try {
-      parsedValue = double.parse(value);
-    } catch (e) {
-      return '';
-    }
-    if (parsedValue > 2.5) {
-      return '';
-    }
-    return null;
-  }
-
-  String getBmiCategory(double bmiValue) {
-    for (var entry in bmiRanges.entries) {
-      if (bmiValue >= entry.value[0] && bmiValue <= entry.value[1]) {
-        return entry.key;
-      }
-    }
-    return 'Unknown';
-  }
-
-  Map<String, String> calculateBmi() {
-    double weight = double.parse(_weightController.text);
-    double height = double.parse(_heightController.text);
-    double bmi = (weight / (height * height));
-    return <String, String>{
-      'bmi': bmi.toStringAsFixed(2),
-      'category': getBmiCategory(bmi),
-    };
-  }
-
-  void setEmail(String email) {
-    setState(() {
-      emailAddress = email;
-    });
-  }
-
-  void showCustomDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomAlertDialog(
-              calculateBmi: calculateBmi, setEmail: setEmail);
-        });
   }
 }

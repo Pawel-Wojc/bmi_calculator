@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CalculateButton extends StatelessWidget {
-  CalculateButton(GlobalKey<FormState> this._formKey,
+  const CalculateButton(this._formKey,
       {super.key, required this.showCustomDialog(BuildContext context)});
-  GlobalKey<FormState> _formKey;
+
+  final GlobalKey<FormState> _formKey;
   final void Function(BuildContext context) showCustomDialog;
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

@@ -6,11 +6,11 @@ import 'custom_text_form_field.dart';
 class CustomAlertDialog extends StatefulWidget {
   const CustomAlertDialog({
     super.key,
-    required Map<String, String> Function() this.calculateBmi,
+    required this.calculateBmi,
     required this.setEmail,
   });
 
-  final Function() calculateBmi;
+  final String? calculateBmi;
   final void Function(String email) setEmail;
   @override
   State<CustomAlertDialog> createState() {
@@ -19,12 +19,22 @@ class CustomAlertDialog extends StatefulWidget {
 }
 
 class _CustomAlertDialogState extends State<CustomAlertDialog> {
-  final _anotherFormKey = GlobalKey<FormState>();
+  final _dialogFormKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return '';
+    }
+    if (!value.contains('@') || !value.contains('.')) {
+      return '';
+    }
+    return null;
+  }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.dispose(); //clean form after close dialog
     super.dispose();
   }
 
@@ -35,25 +45,22 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
         width: 300,
         height: 250,
         child: Form(
-          key: _anotherFormKey,
+          key: _dialogFormKey,
           child: Column(
-            children: <Widget>[
-              Text('Your are in:',
-                  style: GoogleFonts.poppins(
-                      fontSize: 20, fontWeight: FontWeight.w600)),
-              Text(widget.calculateBmi()['category'],
+            children: [
+              const SizedBox(height: 10),
+              Text("You are in: ${widget.calculateBmi!} category",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   )),
-              Text('Category',
-                  style: GoogleFonts.poppins(
-                      fontSize: 20, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 10),
               Text('To see full information please enter your email',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                       fontSize: 16, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 20),
               CustomTextFormField(
                   label: "E-mail",
                   validate: validateEmail,
@@ -72,8 +79,8 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
         ),
         TextButton(
           onPressed: () {
-            if (_anotherFormKey.currentState != null) {
-              if (_anotherFormKey.currentState!.validate()) {
+            if (_dialogFormKey.currentState != null) {
+              if (_dialogFormKey.currentState!.validate()) {
                 Navigator.pop(context, true);
                 widget.setEmail(_controller.text);
               }
@@ -85,17 +92,5 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
         ),
       ],
     );
-  }
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      print("empty");
-      return '';
-    }
-    if (!value.contains('@')) {
-      print("no @");
-      return '';
-    }
-    return null;
   }
 }

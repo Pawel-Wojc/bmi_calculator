@@ -3,16 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'calculator.dart';
 
-class CalculatorScreen extends StatefulWidget {
+class CalculatorScreen extends StatelessWidget {
   const CalculatorScreen({super.key});
 
-  @override
-  State<CalculatorScreen> createState() {
-    return _CalculatorScreen();
-  }
-}
-
-class _CalculatorScreen extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
