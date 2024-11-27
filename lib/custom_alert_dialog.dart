@@ -4,13 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'custom_text_form_field.dart';
 
 class CustomAlertDialog extends StatefulWidget {
-  const CustomAlertDialog({
+  CustomAlertDialog({
     super.key,
     required this.calculateBmi,
     required this.setEmail,
   });
 
-  final String? calculateBmi;
+  final RegExp emailRegex =
+      RegExp(r'^[a-zA-Z0-9]{2,}@[a-zA-Z0-9]{2,}\.[a-zA-Z]{2,}$');
+
+  final String calculateBmi;
   final void Function(String email) setEmail;
   @override
   State<CustomAlertDialog> createState() {
@@ -26,7 +29,8 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     if (value == null || value.isEmpty) {
       return '';
     }
-    if (!value.contains('@') || !value.contains('.')) {
+
+    if (!widget.emailRegex.hasMatch(value)) {
       return '';
     }
     return null;
@@ -49,7 +53,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           child: Column(
             children: [
               const SizedBox(height: 10),
-              Text("You are in: ${widget.calculateBmi!} category",
+              Text("You are in: ${widget.calculateBmi} category",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: 20,

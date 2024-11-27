@@ -35,7 +35,8 @@ class _CalculatorState extends State<Calculator> {
       context: context,
       builder: (BuildContext context) {
         return CustomAlertDialog(
-            calculateBmi: calculateBmi()['category'], setEmail: setEmail);
+            calculateBmi: calculateBmi()['category'] ?? "Unknown",
+            setEmail: setEmail);
       },
     );
   }
@@ -50,8 +51,20 @@ class _CalculatorState extends State<Calculator> {
   }
 
   Map<String, String> calculateBmi() {
-    double weight = double.parse(_weightController.text);
-    double height = double.parse(_heightController.text);
+    double? weight;
+    double? height;
+    String weightValue = _weightController.text.replaceAll(",", ".");
+    String heightValue = _heightController.text.replaceAll(",", ".");
+
+    try {
+      weight = double.parse(weightValue);
+      height = double.parse(heightValue);
+    } catch (e) {
+      return <String, String>{
+        'bmi': '0',
+        'category': 'Unknown',
+      };
+    }
     double bmi = (weight / (height * height));
     return <String, String>{
       'bmi': bmi.toStringAsFixed(2),
