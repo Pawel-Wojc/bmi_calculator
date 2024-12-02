@@ -8,14 +8,19 @@ class CustomTextFormField extends StatelessWidget {
     required this.validate,
     required this.maxCharacters,
     required this.controller,
+    this.onChanged,
   });
+
+  final Function(String)? onChanged;
   final TextEditingController controller;
   final String label;
   final int maxCharacters;
   final Function(String?) validate;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       validator: (value) {

@@ -1,22 +1,42 @@
+import 'package:bmi_app/bloc/dialog_bloc/dialog_bloc.dart';
+import 'package:bmi_app/bloc/input_bloc/input_bloc.dart';
 import 'package:bmi_app/bmi_results.dart';
 import 'package:bmi_app/custom_alert_dialog.dart';
 import 'package:bmi_app/custom_text_form_field.dart';
+import 'package:bmi_app/services/validation_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'calculate_button.dart';
-import 'data/bmi_data.dart';
 
-class Calculator extends StatefulWidget {
-  const Calculator({super.key});
-
+class CalculatorScreen extends StatelessWidget {
   @override
-  State<Calculator> createState() {
-    return _CalculatorState();
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "BMI Calculator",
+            style:
+                GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 20),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider<DialogBloc>(create: (_) => DialogBloc()),
+              BlocProvider<InputBloc>(create: (_) => InputBloc())
+            ],
+            child: Calculator(),
+          ),
+        ],
+      ),
+    );
   }
 }
 
-class _CalculatorState extends State<Calculator> {
+class Calculator extends StatelessWidget {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final String _heightUnit = 'meters';
@@ -25,9 +45,9 @@ class _CalculatorState extends State<Calculator> {
   final _formKey = GlobalKey<FormState>();
 
   void setEmail(String email) {
-    setState(() {
-      emailAddress = email;
-    });
+    // setState(() {
+    // emailAddress = email;
+    //});
   }
 
   void showCustomDialog(BuildContext context) {
@@ -35,76 +55,11 @@ class _CalculatorState extends State<Calculator> {
       context: context,
       builder: (BuildContext context) {
         return CustomAlertDialog(
-            calculateBmi: calculateBmi()['category'] ?? "Unknown",
+            //calculateBmi: calculateBmi()['category'] ?? "Unknown",
+            calculateBmi: "Normal",
             setEmail: setEmail);
       },
     );
-  }
-
-  String getBmiCategory(double bmiValue) {
-    for (var bmiRange in bmiRanges.entries) {
-      if (bmiValue >= bmiRange.value[0] && bmiValue <= bmiRange.value[1]) {
-        return bmiRange.key;
-      }
-    }
-    return 'Unknown';
-  }
-
-  Map<String, String> calculateBmi() {
-    double? weight;
-    double? height;
-    String weightValue = _weightController.text.replaceAll(",", ".");
-    String heightValue = _heightController.text.replaceAll(",", ".");
-
-    try {
-      weight = double.parse(weightValue);
-      height = double.parse(heightValue);
-    } catch (e) {
-      return <String, String>{
-        'bmi': '0',
-        'category': 'Unknown',
-      };
-    }
-    double bmi = (weight / (height * height));
-    return <String, String>{
-      'bmi': bmi.toStringAsFixed(2),
-      'category': getBmiCategory(bmi),
-    };
-  }
-
-  String? validateWeight(String? value) {
-    if (value == null || value.isEmpty) {
-      return '';
-    }
-    value = value.replaceAll(',', '.');
-    double? parsedValue;
-    try {
-      parsedValue = double.parse(value);
-    } catch (e) {
-      return '';
-    }
-    if (parsedValue > 200 || parsedValue < 1) {
-      return '';
-    }
-    //print(parsedValue);
-    return null;
-  }
-
-  String? validateHeight(String? value) {
-    if (value == null || value.isEmpty) {
-      return '';
-    }
-    value = value.replaceAll(',', '.');
-    double? parsedValue;
-    try {
-      parsedValue = double.parse(value);
-    } catch (e) {
-      return '';
-    }
-    if (parsedValue > 2.5 || parsedValue < 0.5) {
-      return '';
-    }
-    return null;
   }
 
   @override
@@ -144,7 +99,14 @@ class _CalculatorState extends State<Calculator> {
                               child: CustomTextFormField(
                                   controller: _heightController,
                                   label: "($_heightUnit)",
-                                  validate: validateHeight,
+                                  onChanged: (value) {
+                                    context
+                                        .read<InputBloc>()
+                                        .add(HeightChanged(value));
+                                  },
+                                  //validate: validateHeight,
+                                  validate: (value) =>
+                                      ValidationService.validateWeight(value),
                                   maxCharacters: 4)),
                           const SizedBox(height: 4),
                           Align(
@@ -179,7 +141,19 @@ class _CalculatorState extends State<Calculator> {
                               child: CustomTextFormField(
                                   controller: _weightController,
                                   label: "($_weightUnit)",
-                                  validate: validateWeight,
+                                  onChanged: (value) {
+                                    context
+                                        .read<InputBloc>()
+                                        .add(WeightChanged(value));
+                                  },
+                                  //  validate: validateWeight,
+                                  validate: (value) {
+                                    if (context.read<InputBloc>().state
+                                        is WeightValidState) {
+                                      return null;
+                                    } else
+                                      "Enter valid state";
+                                  },
                                   maxCharacters: 6)),
                           const SizedBox(height: 4),
                           Align(
@@ -200,12 +174,25 @@ class _CalculatorState extends State<Calculator> {
           ),
           // CalculateButton(_formKey)
           const SizedBox(height: 20),
-          CalculateButton(_formKey, showCustomDialog: showCustomDialog),
+          BlocListener<DialogBloc, DialogState>(
+            listener: (context, state) {
+              if (state.isOpen) {
+                showCustomDialog(context);
+              }
+            },
+            child: Container(),
+          ),
+          CalculateButton(() {
+            if (_formKey.currentState!.validate()) {
+              context.read<DialogBloc>().add(const DialogOpenEvent());
+            }
+          }),
           if (emailAddress != null)
-            BmiResults(
-              bmiValue: calculateBmi()['bmi'],
-              bmiCategory: calculateBmi()['category'],
-            )
+            const BmiResults(
+                //bmiValue: calculateBmi()['bmi'],
+                //bmiCategory: calculateBmi()['category'],
+                bmiValue: "20",
+                bmiCategory: "Normal")
         ],
       ),
     );

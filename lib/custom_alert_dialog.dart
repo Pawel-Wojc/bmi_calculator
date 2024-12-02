@@ -10,9 +10,6 @@ class CustomAlertDialog extends StatefulWidget {
     required this.setEmail,
   });
 
-  final RegExp emailRegex =
-      RegExp(r'^[a-zA-Z0-9]{2,}@[a-zA-Z0-9]{2,}\.[a-zA-Z]{2,}$');
-
   final String calculateBmi;
   final void Function(String email) setEmail;
   @override
@@ -24,17 +21,6 @@ class CustomAlertDialog extends StatefulWidget {
 class _CustomAlertDialogState extends State<CustomAlertDialog> {
   final _dialogFormKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return '';
-    }
-
-    if (!widget.emailRegex.hasMatch(value)) {
-      return '';
-    }
-    return null;
-  }
 
   @override
   void dispose() {
@@ -67,7 +53,9 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
               const SizedBox(height: 20),
               CustomTextFormField(
                   label: "E-mail",
-                  validate: validateEmail,
+                  validate: (value) {
+                    return null;
+                  },
                   maxCharacters: 90,
                   controller: _controller),
             ],

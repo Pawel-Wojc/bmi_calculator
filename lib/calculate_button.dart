@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CalculateButton extends StatelessWidget {
-  const CalculateButton(this._formKey,
-      {super.key, required this.showCustomDialog(BuildContext context)});
+  const CalculateButton(
+    this.onPressed, {
+    super.key,
+  });
 
-  final GlobalKey<FormState> _formKey;
-  final void Function(BuildContext context) showCustomDialog;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        _formKey.currentState!.validate();
-        if (_formKey.currentState!.validate()) {
-          showCustomDialog(context);
-        }
-      },
+      onPressed: onPressed,
       style: const ButtonStyle(
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.zero),
