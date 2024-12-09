@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'custom_text_form_field.dart';
 
 class CustomAlertDialog extends StatelessWidget {
-  CustomAlertDialog({
+  const CustomAlertDialog({
     super.key,
     required this.calculatedBmiCategory,
     required this.contextFromCalculator,
@@ -25,7 +25,7 @@ class CustomAlertDialog extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 10),
-              Text("You are in: ${calculatedBmiCategory} category",
+              Text("You are in: $calculatedBmiCategory category",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: 20,
