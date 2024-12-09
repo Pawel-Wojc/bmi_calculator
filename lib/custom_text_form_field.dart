@@ -7,12 +7,11 @@ class CustomTextFormField extends StatelessWidget {
     required this.label,
     required this.validate,
     required this.maxCharacters,
-    required this.controller,
     this.onChanged,
   });
 
   final Function(String)? onChanged;
-  final TextEditingController controller;
+
   final String label;
   final int maxCharacters;
   final Function(String?) validate;
@@ -20,14 +19,14 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChanged!(value);
+      },
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      controller: controller,
       validator: (value) {
         return validate(value);
       },
       maxLength: maxCharacters,
-      keyboardType: TextInputType.number,
       style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
       decoration: const InputDecoration(
         labelStyle: TextStyle(

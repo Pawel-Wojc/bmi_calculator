@@ -1,7 +1,8 @@
 import '../data/bmi_data.dart';
 
 class CalculateService {
-  Map<String, String> calculateBmi(String weightValue, String heightValue) {
+  static Map<String, String> calculateBmi(
+      String weightValue, String heightValue) {
     double? weight;
     double? height;
     weightValue = weightValue.replaceAll(",", ".");
@@ -23,8 +24,9 @@ class CalculateService {
     };
   }
 
-  String getBmiCategory(double bmiValue) {
-    for (var bmiRange in bmiRanges.entries) {
+  static String getBmiCategory(double bmiValue) {
+    //for (var bmiRange in bmiRanges.entries) {
+    for (var bmiRange in bmiRangesNew.entries) {
       if (bmiValue >= bmiRange.value[0] && bmiValue <= bmiRange.value[1]) {
         return bmiRange.key;
       }

@@ -1,21 +1,27 @@
 class ValidationService {
   static final RegExp emailRegex =
-      RegExp(r'^[a-zA-Z0-9]{2,}@[a-zA-Z0-9]{2,}\.[a-zA-Z]{2,}$');
+      RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
   static String? validateWeight(String? value) {
     if (value == null || value.isEmpty) {
       return '';
     }
     value = value.replaceAll(',', '.');
     double? parsedValue;
+    int index = value.indexOf('.');
+    if (index != -1) {
+      if (value.substring(index + 1).length > 2) {
+        return '';
+      }
+    }
     try {
       parsedValue = double.parse(value);
     } catch (e) {
       return '';
     }
-    if (parsedValue > 200 || parsedValue < 1) {
+    if (parsedValue > 600 || parsedValue < 1) {
       return '';
     }
-    //print(parsedValue);
     return null;
   }
 
@@ -30,7 +36,7 @@ class ValidationService {
     } catch (e) {
       return '';
     }
-    if (parsedValue > 2.5 || parsedValue < 0.5) {
+    if (parsedValue > 2.5 || parsedValue < 0.01) {
       return '';
     }
     return null;
@@ -41,7 +47,7 @@ class ValidationService {
       return '';
     }
 
-    if (emailRegex.hasMatch(value)) {
+    if (!(emailRegex.hasMatch(value))) {
       return '';
     }
     return null;

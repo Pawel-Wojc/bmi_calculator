@@ -5,8 +5,8 @@ class BmiResults extends StatelessWidget {
   const BmiResults(
       {super.key, required this.bmiValue, required this.bmiCategory});
 
-  final String? bmiValue;
-  final String? bmiCategory;
+  final String bmiValue;
+  final String bmiCategory;
 
   @override
   Widget build(BuildContext context) {

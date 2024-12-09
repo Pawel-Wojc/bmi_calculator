@@ -1,22 +1,24 @@
 part of 'input_bloc.dart';
 
-@immutable
-sealed class InputState {}
+class InputState {
+  String? emailError;
+  String? heightError;
+  String? weightError;
+  String? email;
+  String? height;
+  String? weight;
+  bool isWeightAndHeightValid;
 
-class InputInitialState extends InputState {}
+  InputState(this.emailError, this.email, this.heightError, this.height,
+      this.weightError, this.weight, this.isWeightAndHeightValid);
+}
 
-class WeightValidState extends InputState {}
+final class InputInitial extends InputState {
+  InputInitial(super.emailError, super.email, super.heightError, super.height,
+      super.weightError, super.weight, super.isWeightAndHeightValid);
+}
 
-class WeightInvalidState extends InputState {}
-
-class HeightValidState extends InputState {}
-
-class HeightInvalidState extends InputState {}
-
-class EmailValidState extends InputState {}
-
-class EmailInvalidState extends InputState {}
-
-class FormValidState extends InputState {}
-
-class FormInvalidState extends InputState {}
+final class ChangeState extends InputState {
+  ChangeState(super.emailError, super.email, super.heightError, super.height,
+      super.weightError, super.weight, super.isWeightAndHeightValid);
+}
