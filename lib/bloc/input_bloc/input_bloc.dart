@@ -6,43 +6,29 @@ part 'input_event.dart';
 part 'input_state.dart';
 
 class InputBloc extends Bloc<InputEvent, InputState> {
-  InputBloc() : super(InputInitialState()) {
-    on<InputEvent>((event, emit) {
-      // TODO: implement event handler
+  InputBloc() : super(InputInitial('', '', '', '', '', '', false)) {
+    on<WeightChanged>((event, emit) {
+      final weightError = ValidationService.validateWeight(event.weight);
+      var isWeightAndHeightValid =
+          weightError == null && state.heightError == null;
+      emit(ChangeState(state.emailError, state.email, state.heightError,
+          state.height, weightError, event.weight, isWeightAndHeightValid));
     });
-  }
-  @override
-  Stream<InputState> mapEventToState(InputEvent event) async* {
-    if (event is WeightChanged) {
-      if (event.weight.isNotEmpty) {
-        if (ValidationService.validateWeight(event.weight) == null) {
-          yield WeightValidState();
-        } else {
-          yield WeightInvalidState();
-        }
-      } else {
-        yield WeightInvalidState();
-      }
-    } else if (event is HeightChanged) {
-      if (event.height.isNotEmpty) {
-        if (ValidationService.validateHeight(event.height) == null) {
-          yield HeightValidState();
-        } else {
-          yield HeightInvalidState();
-        }
-      } else {
-        yield HeightInvalidState();
-      }
-    } else if (event is EmailChanged) {
-      if (event.email.isNotEmpty) {
-        if (ValidationService.validateEmail(event.email) == null) {
-          yield EmailValidState();
-        } else {
-          yield EmailInvalidState();
-        }
-      } else {
-        yield EmailInvalidState();
-      }
-    }
+
+    on<HeightChanged>((event, emit) {
+      final heightError = ValidationService.validateHeight(event.height);
+      var isWeightAndHeightValid =
+          heightError == null && state.weightError == null;
+      emit(ChangeState(state.emailError, state.email, heightError, event.height,
+          state.weightError, state.weight, isWeightAndHeightValid));
+    });
+
+    on<EmailChanged>((event, emit) {
+      final emailError = ValidationService.validateEmail(event.email);
+      var isWeightAndHeightValid =
+          state.weightError == null && state.heightError == null;
+      emit(ChangeState(emailError, event.email, state.heightError, state.height,
+          state.weightError, state.weight, isWeightAndHeightValid));
+    });
   }
 }
