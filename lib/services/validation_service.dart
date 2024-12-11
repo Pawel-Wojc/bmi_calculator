@@ -8,7 +8,7 @@ class ValidationService {
 
   static String? validateWeight(String? value, UnitsSystem units) {
     if (value == null || value.isEmpty) {
-      return '';
+      return 'Weight cant be null/empty';
     }
     value = value.replaceAll(',', '.');
     double? parsedValue;
@@ -16,52 +16,54 @@ class ValidationService {
 
     value = UnitsCalculatorService.recalculateWeight(
         units, UnitsSystem.metric, value);
-    print('validation weight: $value');
     if (index != -1) {
       if (value.substring(index + 1).length > 2) {
-        return '';
+        return 'To many digits in weight';
       }
     }
     try {
       parsedValue = double.parse(value);
     } catch (e) {
-      return '';
+      return 'Cant parse weight';
     }
-    if (parsedValue > 600 || parsedValue < 1) {
-      return '';
+    if (parsedValue > maxMetricValues['weight']!) {
+      return 'Weight to big';
+    } else if (parsedValue < minMetricValues['weight']!) {
+      return 'Weight to small';
     }
     return null;
   }
 
   static String? validateHeight(String? value, UnitsSystem units) {
     if (value == null || value.isEmpty) {
-      return '';
+      return 'Value cant be null';
     }
     value = value.replaceAll(',', '.');
     double? parsedValue;
 
     value = UnitsCalculatorService.recalculateHeight(
         units, UnitsSystem.metric, value);
-    print('validation height: $value');
+
     try {
       parsedValue = double.parse(value);
     } catch (e) {
-      return '';
+      return 'Cant parse value';
     }
-    if ((parsedValue > 2.5) || parsedValue < 0.01) {
-      print(parsedValue);
-      return '';
+    if ((parsedValue > maxMetricValues['height']!)) {
+      return 'Value to big';
+    } else if (parsedValue < minMetricValues['height']!) {
+      return 'Value to small';
     }
     return null;
   }
 
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return '';
+      return 'Email cant be empty';
     }
 
     if (!(emailRegex.hasMatch(value))) {
-      return '';
+      return 'Email not match regex';
     }
     return null;
   }
