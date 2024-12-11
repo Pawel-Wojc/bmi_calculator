@@ -18,7 +18,7 @@ void main() {
     });
 
     test('check all bmi value return category', () {
-      for (var bmiValue = 0.0; bmiValue < 42; bmiValue += 0.001) {
+      for (var bmiValue = 0.00; bmiValue < 42; bmiValue += 0.001) {
         final category = CalculateService.getBmiCategory(bmiValue.toDouble());
         expect(category, isNot('Unknown'));
       }
