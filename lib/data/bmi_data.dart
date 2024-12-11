@@ -19,3 +19,16 @@ Map<String, List<double>> bmiRangesNew = {
   'Obese (Class II)': [35.0, 40.0],
   'Obese (Class III)': [40, double.infinity],
 };
+
+enum UnitsSystem { metric, imperial, oldPolish }
+
+Map<UnitsSystem, String> weightLabels = {
+  UnitsSystem.metric: 'kilogram',
+  UnitsSystem.imperial: 'pound',
+  UnitsSystem.oldPolish: 'foot',
+};
+Map<UnitsSystem, String> heightLabels = {
+  UnitsSystem.metric: 'meters',
+  UnitsSystem.imperial: 'foot',
+  UnitsSystem.oldPolish: 'elbow',
+};
