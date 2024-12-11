@@ -17,3 +17,9 @@ class EmailChanged extends InputEvent {
   final String email;
   EmailChanged(this.email);
 }
+
+class RecalculateValues extends InputEvent {
+  final UnitsSystem oldUnit;
+  final UnitsSystem newUnit;
+  RecalculateValues(this.oldUnit, this.newUnit);
+}
