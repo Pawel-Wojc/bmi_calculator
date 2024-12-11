@@ -38,7 +38,6 @@ class CustomAlertDialog extends StatelessWidget {
                       fontSize: 16, fontWeight: FontWeight.w600)),
               const SizedBox(height: 20),
               CustomTextFormField(
-                label: "E-mail",
                 onChanged: (value) {
                   contextFromCalculator
                       .read<InputBloc>()
