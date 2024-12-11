@@ -1,24 +1,26 @@
+import 'package:bmi_app/bloc/units_bloc/units_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    super.key,
-    required this.label,
-    required this.validate,
-    required this.maxCharacters,
-    this.onChanged,
-  });
+  const CustomTextFormField(
+      {super.key,
+      required this.validate,
+      required this.maxCharacters,
+      this.onChanged,
+      this.unitsState,
+      this.controller});
 
   final Function(String)? onChanged;
-
-  final String label;
+  final UnitsState? unitsState;
   final int maxCharacters;
   final Function(String?) validate;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onChanged: (value) {
         onChanged!(value);
       },
