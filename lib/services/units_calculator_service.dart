@@ -1,6 +1,13 @@
 import '../data/bmi_data.dart';
 
 class UnitsCalculatorService {
+  // type here the ratio of values
+  // example: 1 imperial foot = 0.3048 meters
+  // 1 old polish pound = 0.4052 kg
+  static const imperialHeightRatio = 0.3048;
+  static const imperialWeightRatio = 0.4535;
+  static const oldPolishHeightRatio = 0.5955;
+  static const oldPolishWeightRatio = 0.4052;
   static String recalculateHeight(
       UnitsSystem oldUnit, UnitsSystem newUnit, String value) {
     if (oldUnit == newUnit) {
@@ -20,10 +27,10 @@ class UnitsCalculatorService {
         newValue = newValue;
         break;
       case UnitsSystem.imperial:
-        newValue = newValue * 0.3048;
+        newValue = newValue * imperialHeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue * 0.5955;
+        newValue = newValue * oldPolishHeightRatio;
         break;
     }
 
@@ -32,10 +39,10 @@ class UnitsCalculatorService {
       case UnitsSystem.metric:
         break;
       case UnitsSystem.imperial:
-        newValue = newValue / 0.3048;
+        newValue = newValue / imperialHeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue / 0.5955;
+        newValue = newValue / oldPolishHeightRatio;
         break;
     }
     return newValue.toStringAsFixed(2);
@@ -56,13 +63,12 @@ class UnitsCalculatorService {
     //convert to metric
     switch (oldUnit) {
       case UnitsSystem.metric:
-        newValue = newValue;
         break;
       case UnitsSystem.imperial:
-        newValue = newValue * 0.4052;
+        newValue = newValue * imperialWeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue * 0.4535;
+        newValue = newValue * oldPolishWeightRatio;
         break;
     }
 
@@ -71,10 +77,10 @@ class UnitsCalculatorService {
       case UnitsSystem.metric:
         break;
       case UnitsSystem.imperial:
-        newValue = newValue / 0.4052;
+        newValue = newValue / imperialWeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue / 0.4535;
+        newValue = newValue / oldPolishWeightRatio;
         break;
     }
     return newValue.toStringAsFixed(2);
