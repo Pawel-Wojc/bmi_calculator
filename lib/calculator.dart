@@ -1,8 +1,10 @@
 import 'package:bmi_app/bloc/dialog_bloc/dialog_bloc.dart';
 import 'package:bmi_app/bloc/input_bloc/input_bloc.dart';
+import 'package:bmi_app/bloc/units_bloc/units_bloc.dart';
 import 'package:bmi_app/custom_alert_dialog.dart';
 import 'package:bmi_app/custom_text_form_field.dart';
 import 'package:bmi_app/services/calculate_service.dart';
+import 'package:bmi_app/units_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +18,13 @@ class CalculatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
+        child: MultiBlocProvider(
+      providers: [
+        BlocProvider<DialogBloc>(create: (_) => DialogBloc()),
+        BlocProvider<UnitsBloc>(create: (_) => UnitsBloc()),
+        BlocProvider<InputBloc>(
+            create: (context) => InputBloc(context.read<UnitsBloc>()))
+      ],
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -25,24 +34,22 @@ class CalculatorScreen extends StatelessWidget {
                 GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 20),
-          MultiBlocProvider(
-            providers: [
-              BlocProvider<DialogBloc>(create: (_) => DialogBloc()),
-              BlocProvider<InputBloc>(create: (_) => InputBloc())
-            ],
-            child: const Calculator(),
-          )
+          UnitsButton(),
+          const SizedBox(height: 20),
+          Calculator(),
         ],
       ),
-    );
+    ));
   }
 }
 
 class Calculator extends StatelessWidget {
   final String _heightUnit = 'meters';
   final String _weightUnit = 'kilograms';
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
 
-  const Calculator({super.key});
+  Calculator({super.key});
 
   @override
   Widget build(BuildContext calculatorContext) {
@@ -76,27 +83,39 @@ class Calculator extends StatelessWidget {
                         SizedBox(
                             width: 119,
                             height: 32,
-                            child: CustomTextFormField(
-                                label: "($_heightUnit)",
-                                onChanged: (value) {
-                                  calculatorContext
-                                      .read<InputBloc>()
-                                      .add(HeightChanged(value));
-                                },
-                                validate: (value) {
-                                  return calculatorContext
-                                      .read<InputBloc>()
-                                      .state
-                                      .heightError;
-                                },
-                                maxCharacters: 4)),
+                            child: BlocListener<UnitsBloc, UnitsState>(
+                              listener: (context, state) {
+                                final inputState =
+                                    context.read<InputBloc>().state;
+
+                                _heightController.text = inputState.height!;
+                              },
+                              child: CustomTextFormField(
+                                  controller: _heightController,
+                                  onChanged: (value) {
+                                    calculatorContext
+                                        .read<InputBloc>()
+                                        .add(HeightChanged(value));
+                                  },
+                                  validate: (value) {
+                                    return calculatorContext
+                                        .read<InputBloc>()
+                                        .state
+                                        .heightError;
+                                  },
+                                  maxCharacters: 4),
+                            )),
                         const SizedBox(height: 4),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: Text(
-                            "($_heightUnit)",
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w400),
+                          child: BlocBuilder<UnitsBloc, UnitsState>(
+                            builder: (context, state) {
+                              return Text(
+                                "(${state.heightUnit})",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              );
+                            },
                           ),
                         )
                       ],
@@ -118,29 +137,40 @@ class Calculator extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         SizedBox(
-                            width: 119,
-                            height: 32,
-                            child: CustomTextFormField(
-                                label: "($_weightUnit)",
-                                onChanged: (value) {
-                                  calculatorContext
-                                      .read<InputBloc>()
-                                      .add(WeightChanged(value));
-                                },
-                                validate: (value) {
-                                  return calculatorContext
-                                      .read<InputBloc>()
-                                      .state
-                                      .weightError;
-                                },
-                                maxCharacters: 6)),
+                          width: 119,
+                          height: 32,
+                          child: BlocListener<UnitsBloc, UnitsState>(
+                              listener: (context, unitsState) {
+                                final inputState =
+                                    context.read<InputBloc>().state;
+                                _weightController.text = inputState.weight!;
+                              },
+                              child: CustomTextFormField(
+                                  onChanged: (value) {
+                                    calculatorContext
+                                        .read<InputBloc>()
+                                        .add(WeightChanged(value));
+                                  },
+                                  controller: _weightController,
+                                  validate: (value) {
+                                    return calculatorContext
+                                        .read<InputBloc>()
+                                        .state
+                                        .weightError;
+                                  },
+                                  maxCharacters: 6)),
+                        ),
                         const SizedBox(height: 4),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: Text(
-                            "($_weightUnit)",
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w400),
+                          child: BlocBuilder<UnitsBloc, UnitsState>(
+                            builder: (context, state) {
+                              return Text(
+                                "(${state.weightUnit})",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                              );
+                            },
                           ),
                         )
                       ],
