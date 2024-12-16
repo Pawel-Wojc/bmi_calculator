@@ -34,7 +34,7 @@ class CalculatorScreen extends StatelessWidget {
                 GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 20),
-          UnitsButton(),
+          const UnitsButton(),
           const SizedBox(height: 20),
           Calculator(),
         ],
@@ -44,8 +44,6 @@ class CalculatorScreen extends StatelessWidget {
 }
 
 class Calculator extends StatelessWidget {
-  final String _heightUnit = 'meters';
-  final String _weightUnit = 'kilograms';
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
 
@@ -191,7 +189,8 @@ class Calculator extends StatelessWidget {
                     builder: (BuildContext context) {
                       var bmiResults = CalculateService.calculateBmi(
                           calculatorContext.read<InputBloc>().state.weight!,
-                          calculatorContext.read<InputBloc>().state.height!);
+                          calculatorContext.read<InputBloc>().state.height!,
+                          calculatorContext.read<UnitsBloc>().state.units);
                       return CustomAlertDialog(
                         contextFromCalculator: calculatorContext,
                         calculatedBmiCategory: bmiResults['category']!,
@@ -214,7 +213,8 @@ class Calculator extends StatelessWidget {
                 calculatorContext.read<InputBloc>().state.emailError == null) {
               var bmiResults = CalculateService.calculateBmi(
                   calculatorContext.read<InputBloc>().state.weight!,
-                  calculatorContext.read<InputBloc>().state.height!);
+                  calculatorContext.read<InputBloc>().state.height!,
+                  calculatorContext.read<UnitsBloc>().state.units);
               return BmiResults(
                   bmiValue: bmiResults['bmi']!,
                   bmiCategory: bmiResults['category']!);

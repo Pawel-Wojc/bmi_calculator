@@ -1,13 +1,13 @@
 part of 'input_bloc.dart';
 
 class InputState {
-  String? emailError;
+  String? emailError; //errors for input fields
   String? heightError;
   String? weightError;
   String? email;
   String? height;
   String? weight;
-  bool isWeightAndHeightValid;
+  bool isWeightAndHeightValid; //state to block or not opening dialog bloc
 
   InputState(this.emailError, this.email, this.heightError, this.height,
       this.weightError, this.weight, this.isWeightAndHeightValid);

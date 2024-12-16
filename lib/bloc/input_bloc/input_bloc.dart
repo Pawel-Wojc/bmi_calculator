@@ -59,7 +59,6 @@ class InputBloc extends Bloc<InputEvent, InputState> {
             event.oldUnit, event.newUnit, state.weight!);
       }
 
-      print(newHeight);
       emit(ChangeState(state.emailError, state.email, heightError, newHeight,
           weightError, newWeight, isWeightAndHeightValid));
     });

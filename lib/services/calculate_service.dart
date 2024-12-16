@@ -1,12 +1,18 @@
+import 'package:bmi_app/services/units_calculator_service.dart';
+
 import '../data/bmi_data.dart';
 
 class CalculateService {
   static Map<String, String> calculateBmi(
-      String weightValue, String heightValue) {
+      String weightValue, String heightValue, UnitsSystem units) {
     double? weight;
     double? height;
     weightValue = weightValue.replaceAll(",", ".");
     heightValue = heightValue.replaceAll(",", ".");
+    weightValue = UnitsCalculatorService.recalculateWeight(
+        units, UnitsSystem.metric, weightValue);
+    heightValue = UnitsCalculatorService.recalculateHeight(
+        units, UnitsSystem.metric, heightValue);
 
     try {
       weight = double.parse(weightValue);

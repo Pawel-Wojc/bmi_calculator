@@ -21,28 +21,27 @@ class UnitsCalculatorService {
       return value;
     }
 
-    //convert to metric
+    //first, convert to metric from any unit
     switch (oldUnit) {
-      case UnitsSystem.metric:
-        newValue = newValue;
-        break;
       case UnitsSystem.imperial:
         newValue = newValue * imperialHeightRatio;
         break;
       case UnitsSystem.oldPolish:
         newValue = newValue * oldPolishHeightRatio;
         break;
+      default:
+        break;
     }
 
-    //convert to new unit
+    //then, convert to new unit
     switch (newUnit) {
-      case UnitsSystem.metric:
-        break;
       case UnitsSystem.imperial:
         newValue = newValue / imperialHeightRatio;
         break;
       case UnitsSystem.oldPolish:
         newValue = newValue / oldPolishHeightRatio;
+        break;
+      default:
         break;
     }
     return newValue.toStringAsFixed(2);

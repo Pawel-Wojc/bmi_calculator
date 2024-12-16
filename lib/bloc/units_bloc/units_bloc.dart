@@ -7,7 +7,7 @@ part 'units_event.dart';
 part 'units_state.dart';
 
 class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
-  UnitsBloc() : super(UnitsInitial(UnitsSystem.metric, 'kilogra', 'meters')) {
+  UnitsBloc() : super(UnitsInitial(UnitsSystem.metric, 'kilograms', 'meters')) {
     on<ChangeUnitsEvent>((event, emit) {
       emit(UnitsState(
           event.unit, getWeightLabel(event.unit), getHeightLabel(event.unit)));
