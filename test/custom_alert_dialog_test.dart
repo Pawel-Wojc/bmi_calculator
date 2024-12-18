@@ -15,7 +15,7 @@ void main() {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
 
-    when(mockInputBloc.state).thenReturn(InputState(
+    when(mockInputBloc.state).thenReturn(InputInitial(
       null,
       '',
       null,
@@ -56,7 +56,7 @@ void main() {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
 
-    when(mockInputBloc.state).thenReturn(InputState(
+    when(mockInputBloc.state).thenReturn(InputInitial(
       null,
       '',
       null,
@@ -95,7 +95,7 @@ void main() {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
 
-    when(mockInputBloc.state).thenReturn(InputState(
+    when(mockInputBloc.state).thenReturn(InputInitial(
       'Invalid email',
       '',
       null,
@@ -135,7 +135,7 @@ void main() {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
 
-    when(mockInputBloc.state).thenReturn(InputState(
+    when(mockInputBloc.state).thenReturn(InputInitial(
       null,
       '',
       null,

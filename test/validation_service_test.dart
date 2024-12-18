@@ -4,17 +4,23 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group("Weight validation", () {
+    late ValidationService validationService;
+
+    setUp(() {
+      validationService = ValidationService();
+    });
+
     test('check valid metric weights', () {
       final List<double> validWeights = [1.0, 1.0, 1.1, 1.01, 590.33];
       final List<double> invalidWeights = [0.0, -32.0, -0.01, 0.003];
       for (var weight in validWeights) {
         var result =
-            ValidationService.validateWeight(weight, UnitsSystem.metric);
+            validationService.validateWeight(weight, UnitsSystem.metric);
         expect(result, null);
       }
       for (var weight in invalidWeights) {
         var result =
-            ValidationService.validateWeight(weight, UnitsSystem.metric);
+            validationService.validateWeight(weight, UnitsSystem.metric);
         expect(result, isA<String>());
       }
     });
@@ -23,12 +29,12 @@ void main() {
       final List<double> invalidWeights = [1900.0];
       for (var weight in validWeights) {
         var result =
-            ValidationService.validateWeight(weight, UnitsSystem.imperial);
+            validationService.validateWeight(weight, UnitsSystem.imperial);
         expect(result, null);
       }
       for (var weight in invalidWeights) {
         var result =
-            ValidationService.validateWeight(weight, UnitsSystem.imperial);
+            validationService.validateWeight(weight, UnitsSystem.imperial);
         expect(result, isA<String>());
       }
     });
@@ -37,29 +43,35 @@ void main() {
       final List<double> invalidWeights = [0.0, -32.0, -0.01, 1490.0];
       for (var weight in validWeights) {
         var result =
-            ValidationService.validateWeight(weight, UnitsSystem.oldPolish);
+            validationService.validateWeight(weight, UnitsSystem.oldPolish);
         expect(result, null);
       }
       for (var weight in invalidWeights) {
         var result =
-            ValidationService.validateWeight(weight, UnitsSystem.oldPolish);
+            validationService.validateWeight(weight, UnitsSystem.oldPolish);
         expect(result, isA<String>());
       }
     });
   });
 
   group('Height validation ', () {
+    late ValidationService validationService;
+
+    setUp(() {
+      validationService = ValidationService();
+    });
+
     test('check valid metric heights', () {
       final List<double> validHeights = [1.0, 1.0, 1.1, 1.01, 2.5];
       final List<double> invalidHeights = [0.0, -32.0, -0.01, 0.003, 8.23];
       for (var height in validHeights) {
         var result =
-            ValidationService.validateHeight(height, UnitsSystem.metric);
+            validationService.validateHeight(height, UnitsSystem.metric);
         expect(result, null);
       }
       for (var height in invalidHeights) {
         var result =
-            ValidationService.validateHeight(height, UnitsSystem.metric);
+            validationService.validateHeight(height, UnitsSystem.metric);
         expect(result, isA<String>());
       }
     });
@@ -68,12 +80,12 @@ void main() {
       final List<double> invalidHeights = [0.0, -32.0, -0.01, 0.003, 8.53];
       for (var height in validHeights) {
         var result =
-            ValidationService.validateHeight(height, UnitsSystem.imperial);
+            validationService.validateHeight(height, UnitsSystem.imperial);
         expect(result, null);
       }
       for (var height in invalidHeights) {
         var result =
-            ValidationService.validateHeight(height, UnitsSystem.imperial);
+            validationService.validateHeight(height, UnitsSystem.imperial);
         expect(result, isA<String>());
       }
     });
@@ -82,17 +94,22 @@ void main() {
       final List<double> invalidHeights = [0.0, -32.0, -0.01, 0.003, 4.23];
       for (var height in validHeights) {
         var result =
-            ValidationService.validateHeight(height, UnitsSystem.oldPolish);
+            validationService.validateHeight(height, UnitsSystem.oldPolish);
         expect(result, null);
       }
       for (var height in invalidHeights) {
         var result =
-            ValidationService.validateHeight(height, UnitsSystem.oldPolish);
+            validationService.validateHeight(height, UnitsSystem.oldPolish);
         expect(result, isA<String>());
       }
     });
   });
   group('Email validation', () {
+    late ValidationService validationService;
+
+    setUp(() {
+      validationService = ValidationService();
+    });
     test('check valid emails', () {
       final List<String> validEmails = [
         'email@wp.pl',
@@ -102,7 +119,7 @@ void main() {
         'as@wd.dl'
       ];
       for (var email in validEmails) {
-        var result = ValidationService.validateEmail(email);
+        var result = validationService.validateEmail(email);
         expect(result, null);
       }
     });
@@ -120,7 +137,7 @@ void main() {
         'a@w.a',
       ];
       for (var email in inValidEmails) {
-        var result = ValidationService.validateEmail(email);
+        var result = validationService.validateEmail(email);
         expect(result, isA<String>());
       }
     });

@@ -48,17 +48,6 @@ enum UnitsSystem {
   }
 }
 
-// Map<UnitsSystem, String> weightLabels = {
-//   UnitsSystem.metric: 'kilogram',
-//   UnitsSystem.imperial: 'pound',
-//   UnitsSystem.oldPolish: 'pound',
-// };
-// Map<UnitsSystem, String> heightLabels = {
-//   UnitsSystem.metric: 'meters',
-//   UnitsSystem.imperial: 'foot',
-//   UnitsSystem.oldPolish: 'elbow',
-// };
-
 const Map<String, double> maxMetricValues = {
   'weight': 600,
   'height': 2.5,

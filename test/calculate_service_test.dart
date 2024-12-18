@@ -4,11 +4,16 @@ import 'package:test/test.dart';
 
 void main() {
   group('Calculator service', () {
+    late CalculateService calculateService;
+    setUp(() {
+      calculateService = CalculateService();
+    });
+
     test('check the bmi is calculated properly in every unit', () {
       for (var height = 0.0; height < 2.4; height += 0.01) {
         for (var weight = 0.0; weight < 10; weight += 0.01) {
           var result =
-              CalculateService.calculateBmi(weight, height, UnitsSystem.metric);
+              calculateService.calculateBmi(weight, height, UnitsSystem.metric);
           expect(
               result['bmi'], (weight / (height * height)).toStringAsFixed(2));
         }
@@ -17,7 +22,7 @@ void main() {
 
     test('check all bmi value return category', () {
       for (var bmiValue = 0.00; bmiValue < 42; bmiValue += 0.01) {
-        final category = CalculateService.getBmiCategory(bmiValue.toDouble());
+        final category = calculateService.getBmiCategory(bmiValue.toDouble());
         expect(category, isNot('Unknown'));
       }
     });

@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:bmi_app/bloc/input_bloc/input_bloc.dart';
 import 'package:bmi_app/bloc/units_bloc/units_bloc.dart';
 import 'package:bmi_app/data/bmi_data.dart';
+import 'package:bmi_app/services/validation_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -10,7 +11,7 @@ void main() {
     late UnitsBloc unitsBloc;
     setUp(() {
       unitsBloc = UnitsBloc();
-      inputBloc = InputBloc(unitsBloc);
+      inputBloc = InputBloc(unitsBloc, ValidationService());
     });
 
     tearDown(() {
