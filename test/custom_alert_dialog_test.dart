@@ -33,10 +33,9 @@ void main() {
         ],
         child: MaterialApp(
           home: Builder(
-            builder: (context) => Scaffold(
+            builder: (context) => const Scaffold(
               body: CustomAlertDialog(
                 calculatedBmiCategory: 'Big',
-                contextFromCalculator: context,
               ),
             ),
           ),
@@ -75,10 +74,9 @@ void main() {
         ],
         child: MaterialApp(
           home: Builder(
-            builder: (context) => Scaffold(
+            builder: (context) => const Scaffold(
               body: CustomAlertDialog(
                 calculatedBmiCategory: 'Big',
-                contextFromCalculator: context,
               ),
             ),
           ),
@@ -115,10 +113,9 @@ void main() {
         ],
         child: MaterialApp(
           home: Builder(
-            builder: (context) => Scaffold(
+            builder: (context) => const Scaffold(
               body: CustomAlertDialog(
                 calculatedBmiCategory: 'Big',
-                contextFromCalculator: context,
               ),
             ),
           ),
@@ -156,10 +153,9 @@ void main() {
         ],
         child: MaterialApp(
           home: Builder(
-            builder: (context) => Scaffold(
+            builder: (context) => const Scaffold(
               body: CustomAlertDialog(
                 calculatedBmiCategory: 'Big',
-                contextFromCalculator: context,
               ),
             ),
           ),

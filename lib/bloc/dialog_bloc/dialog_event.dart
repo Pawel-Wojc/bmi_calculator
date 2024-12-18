@@ -1,6 +1,6 @@
 part of 'dialog_bloc.dart';
 
-abstract class DialogEvent {
+sealed class DialogEvent {
   const DialogEvent();
 }
 

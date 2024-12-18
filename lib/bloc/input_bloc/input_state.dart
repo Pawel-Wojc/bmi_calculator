@@ -1,6 +1,6 @@
 part of 'input_bloc.dart';
 
-class InputState {
+sealed class InputState {
   String? emailError; //errors for input fields
   String? heightError;
   String? weightError;
