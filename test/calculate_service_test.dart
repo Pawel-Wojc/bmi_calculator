@@ -7,11 +7,8 @@ void main() {
     test('check the bmi is calculated properly in every unit', () {
       for (var height = 0.0; height < 2.4; height += 0.01) {
         for (var weight = 0.0; weight < 10; weight += 0.01) {
-          String newWeight = weight.toString();
-          final finalHeight = height.toString();
-
-          var result = CalculateService.calculateBmi(
-              newWeight, finalHeight, UnitsSystem.metric);
+          var result =
+              CalculateService.calculateBmi(weight, height, UnitsSystem.metric);
           expect(
               result['bmi'], (weight / (height * height)).toStringAsFixed(2));
         }

@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group("Weight validation", () {
     test('check valid metric weights', () {
-      final List<String> validWeights = ['1', '1.0', '1,1', '1,01', '590.33'];
-      final List<String> invalidWeights = ['0', '-32', '-0.01', '0.003'];
+      final List<double> validWeights = [1.0, 1.0, 1.1, 1.01, 590.33];
+      final List<double> invalidWeights = [0.0, -32.0, -0.01, 0.003];
       for (var weight in validWeights) {
         var result =
             ValidationService.validateWeight(weight, UnitsSystem.metric);
@@ -19,11 +19,8 @@ void main() {
       }
     });
     test('check valid imperial weights', () {
-      final List<String> validWeights = [
-        '1320',
-        '1320.33',
-      ];
-      final List<String> invalidWeights = ['1900'];
+      final List<double> validWeights = [1320.0, 1320.33];
+      final List<double> invalidWeights = [1900.0];
       for (var weight in validWeights) {
         var result =
             ValidationService.validateWeight(weight, UnitsSystem.imperial);
@@ -36,8 +33,8 @@ void main() {
       }
     });
     test('check valid old polish weights', () {
-      final List<String> validWeights = ['1', '1.0', '1,1', '1,01', '1480'];
-      final List<String> invalidWeights = ['0', '-32', '-0.01', '1490'];
+      final List<double> validWeights = [1.0, 1.01, 1.1, 1.01, 1480.0];
+      final List<double> invalidWeights = [0.0, -32.0, -0.01, 1490.0];
       for (var weight in validWeights) {
         var result =
             ValidationService.validateWeight(weight, UnitsSystem.oldPolish);
@@ -53,14 +50,8 @@ void main() {
 
   group('Height validation ', () {
     test('check valid metric heights', () {
-      final List<String> validHeights = ['1', '1.0', '1,1', '1,01', '2.5'];
-      final List<String> invalidHeights = [
-        '0',
-        '-32',
-        '-0.01',
-        '0.003',
-        '8.23'
-      ];
+      final List<double> validHeights = [1.0, 1.0, 1.1, 1.01, 2.5];
+      final List<double> invalidHeights = [0.0, -32.0, -0.01, 0.003, 8.23];
       for (var height in validHeights) {
         var result =
             ValidationService.validateHeight(height, UnitsSystem.metric);
@@ -73,14 +64,8 @@ void main() {
       }
     });
     test('check valid imperial heights', () {
-      final List<String> validHeights = ['0.1', '8.2', '3,45', '0,31', '4.20'];
-      final List<String> invalidHeights = [
-        '0',
-        '-32',
-        '-0.01',
-        '0.003',
-        '8.53'
-      ];
+      final List<double> validHeights = [0.1, 8.2, 3.45, 0.31, 4.20];
+      final List<double> invalidHeights = [0.0, -32.0, -0.01, 0.003, 8.53];
       for (var height in validHeights) {
         var result =
             ValidationService.validateHeight(height, UnitsSystem.imperial);
@@ -93,14 +78,8 @@ void main() {
       }
     });
     test('check valid old polish heights', () {
-      final List<String> validHeights = ['1', '1.0', '1,1', '1,01', '2.5'];
-      final List<String> invalidHeights = [
-        '0',
-        '-32',
-        '-0.01',
-        '0.003',
-        '4.23'
-      ];
+      final List<double> validHeights = [1.0, 1.0, 1.1, 1.01, 2.5];
+      final List<double> invalidHeights = [0.0, -32.0, -0.01, 0.003, 4.23];
       for (var height in validHeights) {
         var result =
             ValidationService.validateHeight(height, UnitsSystem.oldPolish);

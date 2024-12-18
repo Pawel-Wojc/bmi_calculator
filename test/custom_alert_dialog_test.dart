@@ -19,9 +19,9 @@ void main() {
       null,
       '',
       null,
-      '2',
+      2.0,
       null,
-      '34',
+      34.0,
       true,
     ));
 
@@ -61,9 +61,9 @@ void main() {
       null,
       '',
       null,
-      '2',
+      2.0,
       null,
-      '34',
+      34.0,
       true,
     ));
 
@@ -98,12 +98,12 @@ void main() {
     final mockDialogBloc = MockDialogBloc();
 
     when(mockInputBloc.state).thenReturn(InputState(
-      null,
+      'Invalid email',
       '',
       null,
-      '2',
+      2.0,
       null,
-      '34',
+      34.0,
       true,
     ));
 
@@ -142,9 +142,9 @@ void main() {
       null,
       '',
       null,
-      '2',
+      2.0,
       null,
-      '34',
+      34.0,
       true,
     ));
 
