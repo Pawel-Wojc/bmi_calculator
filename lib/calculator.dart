@@ -4,7 +4,9 @@ import 'package:bmi_app/bloc/units_bloc/units_bloc.dart';
 import 'package:bmi_app/custom_alert_dialog.dart';
 import 'package:bmi_app/custom_text_form_field.dart';
 import 'package:bmi_app/services/calculate_service.dart';
+import 'package:bmi_app/services/validation_service.dart';
 import 'package:bmi_app/units_button.dart';
+import 'package:bmi_app/view_properties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +25,8 @@ class CalculatorScreen extends StatelessWidget {
         BlocProvider<DialogBloc>(create: (_) => DialogBloc()),
         BlocProvider<UnitsBloc>(create: (_) => UnitsBloc()),
         BlocProvider<InputBloc>(
-            create: (context) => InputBloc(context.read<UnitsBloc>()))
+            create: (context) => InputBloc(
+                context.read<UnitsBloc>(), context.read<ValidationService>())),
       ],
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -51,6 +54,7 @@ class Calculator extends StatelessWidget {
 
   @override
   Widget build(BuildContext calculatorContext) {
+    final calculateService = calculatorContext.read<CalculateService>();
     return Column(
       children: [
         SizedBox(
@@ -58,7 +62,7 @@ class Calculator extends StatelessWidget {
           height: 173,
           child: Container(
             decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
+              color: Color(ViewProperties.secondColor),
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             child: Column(
@@ -191,14 +195,15 @@ class Calculator extends StatelessWidget {
               if (state is DialogOpen) {
                 showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      var bmiResults = CalculateService.calculateBmi(
-                          calculatorContext.read<InputBloc>().state.weight!,
-                          calculatorContext.read<InputBloc>().state.height!,
-                          calculatorContext.read<UnitsBloc>().state.units);
+                    builder: (BuildContext dialogContext) {
+                      var bmiResults = calculateService.calculateBmi(
+                          context.read<InputBloc>().state.weight!,
+                          context.read<InputBloc>().state.height!,
+                          context.read<UnitsBloc>().state.units);
                       return CustomAlertDialog(
-                        contextFromCalculator: calculatorContext,
                         calculatedBmiCategory: bmiResults['category']!,
+                        dialogBloc: context.read<DialogBloc>(),
+                        inputBloc: context.read<InputBloc>(),
                       );
                     });
               }
@@ -216,7 +221,7 @@ class Calculator extends StatelessWidget {
           builder: (context, state) {
             if (!state.isOpen &&
                 calculatorContext.read<InputBloc>().state.emailError == null) {
-              var bmiResults = CalculateService.calculateBmi(
+              var bmiResults = calculateService.calculateBmi(
                   calculatorContext.read<InputBloc>().state.weight!,
                   calculatorContext.read<InputBloc>().state.height!,
                   calculatorContext.read<UnitsBloc>().state.units);

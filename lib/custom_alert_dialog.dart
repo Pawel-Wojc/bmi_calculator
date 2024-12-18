@@ -1,7 +1,6 @@
 import 'package:bmi_app/bloc/dialog_bloc/dialog_bloc.dart';
 import 'package:bmi_app/bloc/input_bloc/input_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'custom_text_form_field.dart';
@@ -10,10 +9,12 @@ class CustomAlertDialog extends StatelessWidget {
   const CustomAlertDialog({
     super.key,
     required this.calculatedBmiCategory,
-    required this.contextFromCalculator,
+    this.dialogBloc,
+    this.inputBloc,
   });
 
-  final BuildContext contextFromCalculator;
+  final dialogBloc;
+  final inputBloc;
   final String calculatedBmiCategory;
 
   @override
@@ -39,15 +40,10 @@ class CustomAlertDialog extends StatelessWidget {
               const SizedBox(height: 20),
               CustomTextFormField(
                 onChanged: (value) {
-                  contextFromCalculator
-                      .read<InputBloc>()
-                      .add(EmailChanged(value));
+                  inputBloc.add(EmailChanged(value));
                 },
                 validate: (value) {
-                  return contextFromCalculator
-                      .read<InputBloc>()
-                      .state
-                      .emailError;
+                  return inputBloc.state.emailError;
                 },
                 maxCharacters: 90,
               )
@@ -57,10 +53,8 @@ class CustomAlertDialog extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              contextFromCalculator.read<InputBloc>().add(EmailChanged(''));
-              contextFromCalculator
-                  .read<DialogBloc>()
-                  .add(const DialogCloseEvent());
+              inputBloc.add(EmailChanged(''));
+              dialogBloc.add(const DialogCloseEvent());
               Navigator.pop(context, false);
             },
             child: Text('Cancel',
@@ -69,11 +63,8 @@ class CustomAlertDialog extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              contextFromCalculator
-                  .read<DialogBloc>()
-                  .add(const DialogCloseEvent());
-              if (contextFromCalculator.read<InputBloc>().state.emailError ==
-                  null) {
+              dialogBloc.add(const DialogCloseEvent());
+              if (inputBloc.state.emailError == null) {
                 Navigator.pop(context, true);
               }
             },

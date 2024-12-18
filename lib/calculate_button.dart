@@ -1,3 +1,4 @@
+import 'package:bmi_app/view_properties.dart';
 import 'package:flutter/material.dart';
 
 class CalculateButton extends StatelessWidget {
@@ -16,7 +17,8 @@ class CalculateButton extends StatelessWidget {
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         ),
-        backgroundColor: WidgetStatePropertyAll<Color>(Color(0xFF412A9E)),
+        backgroundColor: WidgetStatePropertyAll<Color>(
+            Color(ViewProperties.buttonFillColor)),
       ),
       child: const Text(
         "Calculate",

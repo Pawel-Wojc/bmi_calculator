@@ -20,18 +20,44 @@ Map<String, List<double>> bmiRangesNew = {
   'Obese (Class III)': [40, double.infinity],
 };
 
-enum UnitsSystem { metric, imperial, oldPolish }
+enum UnitsSystem {
+  metric,
+  imperial,
+  oldPolish;
 
-Map<UnitsSystem, String> weightLabels = {
-  UnitsSystem.metric: 'kilogram',
-  UnitsSystem.imperial: 'pound',
-  UnitsSystem.oldPolish: 'pound',
-};
-Map<UnitsSystem, String> heightLabels = {
-  UnitsSystem.metric: 'meters',
-  UnitsSystem.imperial: 'foot',
-  UnitsSystem.oldPolish: 'elbow',
-};
+  String get weightLabels {
+    switch (this) {
+      case UnitsSystem.metric:
+        return 'kilogram';
+      case UnitsSystem.imperial:
+        return 'pound';
+      case UnitsSystem.oldPolish:
+        return 'pound';
+    }
+  }
+
+  String get heightLabels {
+    switch (this) {
+      case UnitsSystem.metric:
+        return 'meters';
+      case UnitsSystem.imperial:
+        return 'foot';
+      case UnitsSystem.oldPolish:
+        return 'elbow';
+    }
+  }
+}
+
+// Map<UnitsSystem, String> weightLabels = {
+//   UnitsSystem.metric: 'kilogram',
+//   UnitsSystem.imperial: 'pound',
+//   UnitsSystem.oldPolish: 'pound',
+// };
+// Map<UnitsSystem, String> heightLabels = {
+//   UnitsSystem.metric: 'meters',
+//   UnitsSystem.imperial: 'foot',
+//   UnitsSystem.oldPolish: 'elbow',
+// };
 
 const Map<String, double> maxMetricValues = {
   'weight': 600,

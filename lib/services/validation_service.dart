@@ -6,11 +6,13 @@ class ValidationService {
   static final RegExp emailRegex =
       RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
-  static String? validateWeight(double? value, UnitsSystem units) {
+  String? validateWeight(double? value, UnitsSystem units) {
     if (value == null) {
       return 'Weight cant be null/empty';
     }
 
+    value = UnitsCalculatorService.recalculateWeight(
+        units, UnitsSystem.metric, value);
     if (value > maxMetricValues['weight']!) {
       return 'Weight to big';
     } else if (value < minMetricValues['weight']!) {
@@ -19,7 +21,7 @@ class ValidationService {
     return null;
   }
 
-  static String? validateHeight(double? value, UnitsSystem units) {
+  String? validateHeight(double? value, UnitsSystem units) {
     if (value == null) {
       return 'Value cant be null';
     }
@@ -35,7 +37,7 @@ class ValidationService {
     return null;
   }
 
-  static String? validateEmail(String? value) {
+  String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email cant be empty';
     }
