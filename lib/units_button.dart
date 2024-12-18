@@ -27,9 +27,6 @@ class UnitsButton extends StatelessWidget {
             } else {
               unit = UnitsSystem.oldPolish;
             }
-            // maincontext
-            //     .read()<InputBloc>()
-            //     .add(RecalculateValues(state.units, unit));
             maincontext
                 .read<InputBloc>()
                 .add(RecalculateValues(state.units, unit));

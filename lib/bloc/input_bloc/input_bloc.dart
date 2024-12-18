@@ -34,6 +34,7 @@ class InputBloc extends Bloc<InputEvent, InputState> {
 
     on<EmailChanged>((event, emit) {
       final emailError = ValidationService.validateEmail(event.email);
+      print('email changed');
       var isWeightAndHeightValid =
           state.weightError == null && state.heightError == null;
       emit(ChangeState(emailError, event.email, state.heightError, state.height,

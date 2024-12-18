@@ -14,6 +14,7 @@ class UnitsCalculatorService {
       return value;
     }
 
+    value = value.replaceAll(",", ".");
     double newValue;
     try {
       newValue = double.parse(value);
@@ -25,9 +26,11 @@ class UnitsCalculatorService {
     switch (oldUnit) {
       case UnitsSystem.imperial:
         newValue = newValue * imperialHeightRatio;
+        print('Converted to metric: $newValue');
         break;
       case UnitsSystem.oldPolish:
         newValue = newValue * oldPolishHeightRatio;
+        print('Converted to metric: $newValue');
         break;
       default:
         break;
@@ -37,13 +40,16 @@ class UnitsCalculatorService {
     switch (newUnit) {
       case UnitsSystem.imperial:
         newValue = newValue / imperialHeightRatio;
+        print('Converted to imperial: $newValue');
         break;
       case UnitsSystem.oldPolish:
         newValue = newValue / oldPolishHeightRatio;
+        print('Converted to old polish: $newValue');
         break;
       default:
         break;
     }
+  print('----------');
     return newValue.toStringAsFixed(2);
   }
 
@@ -52,6 +58,8 @@ class UnitsCalculatorService {
     if (oldUnit == newUnit) {
       return value;
     }
+
+    value = value.replaceAll(",", ".");
     double newValue;
     try {
       newValue = double.parse(value);
