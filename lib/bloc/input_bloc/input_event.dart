@@ -4,13 +4,18 @@ part of 'input_bloc.dart';
 sealed class InputEvent {}
 
 class WeightChanged extends InputEvent {
-  final String weight;
-  WeightChanged(this.weight);
+  final double? weight;
+  WeightChanged.fromString(String weight)
+      : weight = double.tryParse(weight.replaceAll(',', '.'));
+  WeightChanged(double this.weight);
 }
 
 class HeightChanged extends InputEvent {
-  final String height;
-  HeightChanged(this.height);
+  final double? height;
+  HeightChanged.fromString(String height)
+      : height = double.tryParse(height.replaceAll(',', '.'));
+
+  HeightChanged(double this.height);
 }
 
 class EmailChanged extends InputEvent {

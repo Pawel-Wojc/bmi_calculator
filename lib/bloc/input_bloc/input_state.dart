@@ -5,8 +5,8 @@ class InputState {
   String? heightError;
   String? weightError;
   String? email;
-  String? height;
-  String? weight;
+  double? height;
+  double? weight;
   bool isWeightAndHeightValid; //state to block or not opening dialog bloc
 
   InputState(this.emailError, this.email, this.heightError, this.height,

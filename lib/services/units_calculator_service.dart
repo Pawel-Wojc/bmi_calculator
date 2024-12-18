@@ -8,29 +8,18 @@ class UnitsCalculatorService {
   static const imperialWeightRatio = 0.4535;
   static const oldPolishHeightRatio = 0.5955;
   static const oldPolishWeightRatio = 0.4052;
-  static String recalculateHeight(
-      UnitsSystem oldUnit, UnitsSystem newUnit, String value) {
+  static double recalculateHeight(
+      UnitsSystem oldUnit, UnitsSystem newUnit, double value) {
     if (oldUnit == newUnit) {
       return value;
     }
 
-    value = value.replaceAll(",", ".");
-    double newValue;
-    try {
-      newValue = double.parse(value);
-    } catch (e) {
-      return value;
-    }
-
-    //first, convert to metric from any unit
     switch (oldUnit) {
       case UnitsSystem.imperial:
-        newValue = newValue * imperialHeightRatio;
-        print('Converted to metric: $newValue');
+        value = value * imperialHeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue * oldPolishHeightRatio;
-        print('Converted to metric: $newValue');
+        value = value * oldPolishHeightRatio;
         break;
       default:
         break;
@@ -39,43 +28,31 @@ class UnitsCalculatorService {
     //then, convert to new unit
     switch (newUnit) {
       case UnitsSystem.imperial:
-        newValue = newValue / imperialHeightRatio;
-        print('Converted to imperial: $newValue');
+        value = value / imperialHeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue / oldPolishHeightRatio;
-        print('Converted to old polish: $newValue');
+        value = value / oldPolishHeightRatio;
         break;
       default:
         break;
     }
-  print('----------');
-    return newValue.toStringAsFixed(2);
+    return value;
   }
 
-  static String recalculateWeight(
-      UnitsSystem oldUnit, UnitsSystem newUnit, String value) {
+  static double recalculateWeight(
+      UnitsSystem oldUnit, UnitsSystem newUnit, double value) {
     if (oldUnit == newUnit) {
       return value;
     }
-
-    value = value.replaceAll(",", ".");
-    double newValue;
-    try {
-      newValue = double.parse(value);
-    } catch (e) {
-      return value;
-    }
-
     //convert to metric
     switch (oldUnit) {
       case UnitsSystem.metric:
         break;
       case UnitsSystem.imperial:
-        newValue = newValue * imperialWeightRatio;
+        value = value * imperialWeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue * oldPolishWeightRatio;
+        value = value * oldPolishWeightRatio;
         break;
     }
 
@@ -84,12 +61,12 @@ class UnitsCalculatorService {
       case UnitsSystem.metric:
         break;
       case UnitsSystem.imperial:
-        newValue = newValue / imperialWeightRatio;
+        value = value / imperialWeightRatio;
         break;
       case UnitsSystem.oldPolish:
-        newValue = newValue / oldPolishWeightRatio;
+        value = value / oldPolishWeightRatio;
         break;
     }
-    return newValue.toStringAsFixed(2);
+    return value;
   }
 }

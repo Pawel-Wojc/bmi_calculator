@@ -12,7 +12,7 @@ part 'input_state.dart';
 class InputBloc extends Bloc<InputEvent, InputState> {
   final UnitsBloc unitBloc;
   InputBloc(this.unitBloc)
-      : super(InputInitial('', '', '', '', '', '', false)) {
+      : super(InputInitial('', '', '', null, '', null, false)) {
     on<WeightChanged>((event, emit) {
       final weightError =
           ValidationService.validateWeight(event.weight, unitBloc.state.units);
@@ -48,13 +48,15 @@ class InputBloc extends Bloc<InputEvent, InputState> {
           ValidationService.validateHeight(state.height, event.oldUnit);
       var isWeightAndHeightValid = weightError == null && heightError == null;
 
-      String? newHeight;
+      //String? newHeight;
+      double? newHeight = state.height;
       if (state.height != null) {
         newHeight = UnitsCalculatorService.recalculateHeight(
             event.oldUnit, event.newUnit, state.height!);
       }
 
-      String? newWeight = state.weight;
+      //String? newWeight = state.weight;
+      double? newWeight = state.weight;
       if (state.weight != null && heightError == null) {
         newWeight = UnitsCalculatorService.recalculateWeight(
             event.oldUnit, event.newUnit, state.weight!);

@@ -4,26 +4,13 @@ import '../data/bmi_data.dart';
 
 class CalculateService {
   static Map<String, String> calculateBmi(
-      String weightValue, String heightValue, UnitsSystem units) {
-    double? weight;
-    double? height;
-    weightValue = weightValue.replaceAll(",", ".");
-    heightValue = heightValue.replaceAll(",", ".");
+      double weightValue, double heightValue, UnitsSystem units) {
     weightValue = UnitsCalculatorService.recalculateWeight(
         units, UnitsSystem.metric, weightValue);
     heightValue = UnitsCalculatorService.recalculateHeight(
         units, UnitsSystem.metric, heightValue);
 
-    try {
-      weight = double.parse(weightValue);
-      height = double.parse(heightValue);
-    } catch (e) {
-      return <String, String>{
-        'bmi': '0',
-        'category': 'Unknown',
-      };
-    }
-    double bmi = (weight / (height * height));
+    double bmi = (weightValue / (heightValue * heightValue));
     return <String, String>{
       'bmi': bmi.toStringAsFixed(2),
       'category': getBmiCategory(bmi),

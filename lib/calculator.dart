@@ -85,15 +85,17 @@ class Calculator extends StatelessWidget {
                               listener: (context, state) {
                                 final inputState =
                                     context.read<InputBloc>().state;
-
-                                _heightController.text = inputState.height!;
+                                if (inputState.height != null) {
+                                  _heightController.text =
+                                      inputState.height!.toStringAsFixed(2);
+                                }
                               },
                               child: CustomTextFormField(
                                   controller: _heightController,
                                   onChanged: (value) {
                                     calculatorContext
                                         .read<InputBloc>()
-                                        .add(HeightChanged(value));
+                                        .add(HeightChanged.fromString(value));
                                   },
                                   validate: (value) {
                                     return calculatorContext
@@ -141,13 +143,16 @@ class Calculator extends StatelessWidget {
                               listener: (context, unitsState) {
                                 final inputState =
                                     context.read<InputBloc>().state;
-                                _weightController.text = inputState.weight!;
+                                if (inputState.weight != null) {
+                                  _weightController.text =
+                                      inputState.weight!.toStringAsFixed(2);
+                                }
                               },
                               child: CustomTextFormField(
                                   onChanged: (value) {
                                     calculatorContext
                                         .read<InputBloc>()
-                                        .add(WeightChanged(value));
+                                        .add(WeightChanged.fromString(value));
                                   },
                                   controller: _weightController,
                                   validate: (value) {
