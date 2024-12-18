@@ -15,7 +15,7 @@ void main() {
     });
 
     test("Initial state is correct", () {
-      expect(dialogBloc.state.isOpen, DialogInitial(false).isOpen);
+      expect(dialogBloc.state.isOpen, false);
     });
     blocTest<DialogBloc, DialogState>('Check after open, dialog is open',
         build: () => dialogBloc,
