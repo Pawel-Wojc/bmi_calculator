@@ -15,16 +15,6 @@ void main() {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
 
-    when(mockInputBloc.state).thenReturn(InputInitial(
-      null,
-      '',
-      null,
-      2.0,
-      null,
-      34.0,
-      true,
-    ));
-
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -56,16 +46,6 @@ void main() {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
 
-    when(mockInputBloc.state).thenReturn(InputInitial(
-      null,
-      '',
-      null,
-      2.0,
-      null,
-      34.0,
-      true,
-    ));
-
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -94,16 +74,6 @@ void main() {
   testWidgets("validate should show error message", (tester) async {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
-
-    when(mockInputBloc.state).thenReturn(InputInitial(
-      'Invalid email',
-      '',
-      null,
-      2.0,
-      null,
-      34.0,
-      true,
-    ));
 
     await tester.pumpWidget(
       MultiProvider(
@@ -134,16 +104,6 @@ void main() {
       (tester) async {
     final mockInputBloc = MockInputBloc();
     final mockDialogBloc = MockDialogBloc();
-
-    when(mockInputBloc.state).thenReturn(InputInitial(
-      null,
-      '',
-      null,
-      2.0,
-      null,
-      34.0,
-      true,
-    ));
 
     await tester.pumpWidget(
       MultiProvider(
